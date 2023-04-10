@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@900&family=Rubik+Bubbles&family=Source+Code+Pro:ital,wght@1,600&family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+    <title>dashboard</title>
+    <style>
+        body{
+    width:auto;
+    height :100%;
+    background-color: #f5f5f5;
+
+}
+.container{
+    padding-top: 2rem;
+    padding-right: 2rem;
+    display: flex;
+  justify-content: right;
+  align-items: right   ;
+}
+button {
+    padding: 17px 40px;
+    border-radius: 50px;
+    border: 0;
+    background-color: white;
+    box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-size: 15px;
+    transition: all .5s ease;
+    align-items: center;  
+  
+   }
+   
+   button:hover {
+    letter-spacing: 3px;
+    background-color: hsl(261deg 80% 48%);
+    color: hsl(0, 0%, 100%);
+    box-shadow: rgb(93 24 220) 0px 7px 29px 0px;
+   }
+   
+   button:active {
+    letter-spacing: 3px;
+    background-color: hsl(261deg 80% 48%);
+    color: hsl(0, 0%, 100%);
+    box-shadow: rgb(93 24 220) 0px 0px 0px 0px;
+    transform: translateY(10px);
+    transition: 100ms;
+   }
+   .card {
+    display: flex;  
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+   
+    border-radius: 0px;
+   }
+   .card-img{
+    
+    display: grid;
+    justify-content: center;
+    margin: 3rem; 
+   }
+   .heads{
+       text-align: center;
+        font-size:4rem;
+        font-family: 'Lobster', cursive;
+font-family: 'Poppins', sans-serif;
+font-family: 'Rubik Bubbles', cursive;
+font-family: 'Source Code Pro', monospace;
+font-family: 'Ubuntu', sans-serif;
+font-weight: bolder;
+       }
+
+       
+    </style>
+</head>
+<body><div class="container">
+    <button class="py-4 px-10 rounded-full bg-white shadow-sm uppercase tracking-wide text-sm transition-all duration-500 ease-in hover:bg-purple-500 hover:text-white hover:tracking-wider active:bg-purple-500 active:text-white active:shadow-none transform active:translate-y-1" id="connect-button">Connect Wallet
+        <script>
+        const button = document.getElementById("connect-button");
+
+        const updateButton = () => {
+          const account = localStorage.getItem("walletAddress");
+
+          if (!account) {
+            button.textContent = "Connect wallet";
+            return;
+          }
+
+          ethereum
+            .request({ method: "eth_accounts" })
+            .then((accounts) => {
+              if (accounts.length === 0) {
+                button.textContent = "Connect wallet";
+                localStorage.removeItem("walletAddress");
+              } else {
+                const shortenedAccount = `${accounts[0].slice(
+                  0,
+                  4
+                )}...${accounts[0].slice(-4)}`;
+                button.textContent = shortenedAccount;
+                localStorage.setItem("walletAddress", accounts[0]);
+              }
+            });
+        };
+
+        button.addEventListener("click", () => {
+          const account = localStorage.getItem("walletAddress");
+
+          if (!account) {
+            ethereum
+              .request({ method: "eth_requestAccounts" })
+              .then((accounts) => {
+                const shortenedAccount = `${accounts[0].slice(
+                  0,
+                  4
+                )}...${accounts[0].slice(-4)}`;
+                button.textContent = shortenedAccount;
+                localStorage.setItem("walletAddress", accounts[0]);
+              });
+          } else {
+            ethereum
+              .request({ method: "eth_accounts" })
+              .then((accounts) => {
+                if (accounts.length === 0) {
+                  button.textContent = "Connect wallet";
+                  localStorage.removeItem("walletAddress");
+                } else {
+                  const shortenedAccount = `${accounts[0].slice(
+                    0,
+                    4
+                  )}...${accounts[0].slice(-4)}`;
+                  button.textContent = shortenedAccount;
+                }
+              });
+          }
+        });
+
+        updateButton();
+        ethereum.on("accountsChanged", updateButton);
+      </script></div>
+    
+    <div class="heads">Dashboard</div>
+    <div class="card">
+        <a href="create.html">
+            <div class="card-img"><img src="images/create.png " height="400px" width="400px"><br><button>Create Project</button></div>
+        </a>
+        <a href="projectslist.html">
+            <div class="card-img"><img src="images/Working late-cuate.png " height="400px" width="400px"><br><button>Current Project</button></div>
+        </a>
+        
+        <a href="marketplace.html">
+            <div class="card-img"><img src="images/Starting a business project-pana.png " height="400px" width="400px"><br><button>Marketplace</button></div>
+        </a>
+    </div>
+    
+    
+</body>
+</html>
